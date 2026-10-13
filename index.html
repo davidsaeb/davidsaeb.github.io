@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>David Saeb</title>
+<meta name="description" content="David Saeb — PhD candidate at CU Boulder and visiting researcher at Caltech, using molecular simulation and machine learning to study protein dynamics in neurodegeneration and enzyme design.">
+<meta name="author" content="David Saeb">
+<meta property="og:title" content="David Saeb">
+<meta property="og:description" content="Molecular simulation · protein dynamics · enzyme design">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://davidsaeb.github.io/">
+<meta property="og:image" content="https://davidsaeb.github.io/images/david.jpg">
+<meta name="theme-color" content="#0B3B40">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    /* core palette */
+    --teal: #104F55;       /* surfaces */
+    --sage: #BDC4A7;       /* headings, secondary */
+    --aqua: #59C3C3;       /* links, highlights */
+    /* supporting tones */
+    --deep: #0B3B40;       /* page background */
+    --deeper: #082D31;     /* footer / wells */
+    --aqua-soft: #A6E3E1;  /* hover */
+    --slate: #677283;      /* quiet borders */
+    --text: #EEF2EA;
+    --muted: #B3C2BC;
+    --rule: rgba(189, 196, 167, .16);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0;
+    background: var(--deep);
+    color: var(--text);
+    font: 400 16.5px/1.65 "Roboto", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--aqua); text-decoration: none; }
+  a:hover { color: var(--aqua-soft); text-decoration: underline; text-underline-offset: 3px; }
+  img, video { max-width: 100%; display: block; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11, 59, 64, .86);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-weight: 500; font-size: 17px; color: var(--text); }
+  .brand:hover { color: var(--text); text-decoration: none; }
+  nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-size: 14.5px; }
+  nav ul a { color: var(--muted); }
+  nav ul a:hover { color: var(--aqua); text-decoration: none; }
+
+  /* ---------- Two-column rows: content left, renders on the side ---------- */
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 56px; align-items: start; }
+  .rail { position: sticky; top: 84px; display: flex; flex-direction: column; gap: 22px; }
+
+  /* renders sit directly on the page with a soft glow; no box */
+  .glow {
+    display: flex; align-items: center; justify-content: center; padding: 18px;
+    background: radial-gradient(closest-side, rgba(166, 227, 225, .20), rgba(166, 227, 225, 0) 100%);
+  }
+  .glow img { max-height: 300px; width: auto; }
+  /* videos with a baked-in page-colored background: feather the edges so no rectangle shows */
+  .blend { padding: 0; background: none; }
+  .blend video {
+    width: 100%; height: auto;
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 72%, transparent 100%);
+            mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 72%, transparent 100%);
+  }
+  /* the Kemp movie has its own white background, so it keeps a frame */
+  .frame-light { border-radius: 18px; overflow: hidden; border: 1px solid var(--rule); background: #fff; }
+  .frame-light video { width: 100%; height: auto; }
+
+  /* gentle drift on the renders */
+  .float { animation: drift 9s ease-in-out infinite; }
+  .float.d2 { animation-delay: -3s; } .float.d3 { animation-delay: -6s; }
+  @keyframes drift { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-8px) rotate(.6deg); } }
+  @media (prefers-reduced-motion: reduce) { .float { animation: none; } html { scroll-behavior: auto; } }
+
+  /* ---------- Hero ---------- */
+  header.hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(900px 600px at 82% 30%, rgba(89, 195, 195, .16), transparent 60%),
+      linear-gradient(180deg, var(--teal) 0%, var(--deep) 100%);
+  }
+  header.hero .row { padding: 64px 0 72px; align-items: center; }
+  .who { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
+  .who img { width: 132px; height: 132px; border-radius: 50%; object-fit: cover; border: 3px solid var(--aqua); flex: none; background: var(--teal); }
+  h1 { font: 500 clamp(40px, 6vw, 60px)/1.05 "Roboto", sans-serif; letter-spacing: -.015em; margin: 0 0 6px; }
+  .tagline { font-size: 17px; color: var(--sage); margin: 0; }
+  .bio p { margin: 0 0 16px; max-width: 64ch; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 15px; border: 1px solid rgba(189, 196, 167, .35); border-radius: 999px;
+    color: var(--text); font-size: 14px; font-weight: 500;
+    transition: border-color .15s, background .15s;
+  }
+  .btn:hover { border-color: var(--aqua); color: var(--text); background: rgba(89, 195, 195, .1); text-decoration: none; }
+  .btn.primary { background: var(--aqua); border-color: var(--aqua); color: var(--deeper); }
+  .btn.primary:hover { background: var(--aqua-soft); border-color: var(--aqua-soft); color: var(--deeper); }
+  .btn svg { width: 15px; height: 15px; }
+  .hero-art img { max-height: 620px; width: auto; margin: 0 auto; filter: drop-shadow(0 18px 40px rgba(0, 0, 0, .35)); }
+
+  /* ---------- Sections ---------- */
+  section { padding: 72px 0; border-top: 1px solid var(--rule); }
+  h2 { font: 500 clamp(28px, 4vw, 34px)/1.2 "Roboto", sans-serif; margin: 0 0 28px; color: var(--sage); }
+  h3.sub { font: 500 18px "Roboto", sans-serif; color: var(--sage); margin: 40px 0 6px; }
+  h3.sub:first-of-type { margin-top: 0; }
+
+  /* Interests: a deliberately loose list.
+     To edit, just add or remove <li> lines in the HTML. */
+  .interests { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 26px; max-width: 640px; }
+  .interests li { line-height: 1.25; color: var(--text); }
+  .interests li:nth-child(4n+1) { font-size: 26px; color: var(--aqua); }
+  .interests li:nth-child(4n+2) { font-size: 18px; transform: translateY(6px) rotate(-1.5deg); }
+  .interests li:nth-child(4n+3) { font-size: 22px; color: var(--sage); transform: rotate(1.2deg); }
+  .interests li:nth-child(4n)   { font-size: 16px; color: var(--muted); font-style: italic; transform: translateY(-4px); }
+  .interests li:nth-child(5n)   { font-size: 30px; font-weight: 300; color: var(--aqua-soft); }
+
+  /* Publications */
+  .pub { display: grid; grid-template-columns: 84px 1fr; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--rule); }
+  .pub:last-child { border-bottom: 0; }
+  .pub .yr { font-size: 14px; color: var(--muted); padding-top: 2px; }
+  .badge { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 4px; font-size: 11.5px; font-weight: 500; background: var(--sage); color: var(--deeper); }
+  .badge.alt { background: transparent; color: var(--aqua); border: 1px solid var(--aqua); margin-top: 0; }
+  .pub h4 { font: 500 16.5px/1.4 "Roboto", sans-serif; margin: 0 0 6px; color: var(--text); }
+  .pub .authors { font-size: 14.5px; color: var(--muted); margin: 0 0 4px; }
+  .pub .authors b { color: var(--aqua-soft); font-weight: 500; }
+  .pub .venue { font-size: 14px; margin: 0; }
+  .pub .venue .note { color: var(--muted); }
+  .pub .venue a { margin-left: 10px; font-size: 13.5px; }
+
+  /* Talks / honors */
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list li { display: grid; grid-template-columns: 52px 1fr; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+  .list li:last-child { border-bottom: 0; }
+  .list .y { font-size: 14px; color: var(--muted); padding-top: 1px; }
+  .list .sub { display: block; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+  .kind { display: inline-block; font-size: 11.5px; font-weight: 500; padding: 1px 7px; border-radius: 4px; border: 1px solid var(--slate); color: var(--muted); margin-right: 6px; vertical-align: 1px; }
+  .kind.oral { border-color: var(--aqua); color: var(--aqua); }
+
+  .beyond p { max-width: 64ch; margin: 0 0 14px; }
+
+  footer { background: var(--deeper); border-top: 1px solid var(--rule); padding: 28px 0 40px; font-size: 13.5px; color: var(--muted); }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 960px) {
+    .row { grid-template-columns: minmax(0, 1fr) 280px; gap: 36px; }
+    .glow img { max-height: 240px; }
+  }
+  @media (max-width: 760px) {
+    .row { grid-template-columns: 1fr; }
+    .rail { position: static; flex-direction: row; overflow-x: auto; gap: 14px; padding-bottom: 4px; scroll-snap-type: x mandatory; }
+    .rail > * { flex: 0 0 78%; scroll-snap-align: start; }
+    .rail > :only-child { flex-basis: 100%; }
+    header.hero .row { padding: 44px 0 56px; }
+    .hero-art img { max-height: 440px; margin: 0; }
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 0 16px; }
+    nav ul { gap: 16px; font-size: 13.5px; }
+    nav ul li.hide-sm { display: none; }
+    .who { gap: 16px; }
+    .who img { width: 96px; height: 96px; }
+    section { padding: 52px 0; }
+    .interests li:nth-child(4n+1) { font-size: 22px; }
+    .interests li:nth-child(5n) { font-size: 25px; }
+    .pub { grid-template-columns: 1fr; gap: 6px; }
+    .pub .yr { display: flex; gap: 10px; align-items: center; }
+    .badge { margin-top: 0; }
+  }
+</style>
+</head>
+<body id="top">
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">David Saeb</a>
+    <ul>
+      <li class="hide-sm"><a href="#interests">Interests</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li class="hide-sm"><a href="#talks">Talks &amp; Honors</a></li>
+      <li><a href="cv.pdf">CV</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap row">
+    <div>
+      <div class="who">
+        <img src="images/david.jpg" alt="Portrait of David Saeb">
+        <div>
+          <h1>David Saeb</h1>
+          <p class="tagline">Molecular simulation, protein dynamics, and enzyme design</p>
+        </div>
+      </div>
+      <div class="bio">
+        <p>I'm a PhD candidate in Chemical Engineering at the <a href="https://www.colorado.edu/chbe/">University of Colorado Boulder</a>, advised by <a href="https://www.sprengergroup.com/">Prof. Kayla Sprenger</a>, and an <a href="https://www.nsfgrfp.org/">NSF Graduate Research Fellow</a>. Since February 2026 I've also been a visiting student researcher in the lab of <a href="http://fhalab.caltech.edu/">Prof. Frances Arnold</a> at Caltech.</p>
+        <p>My work asks how protein motion shapes protein function. Using molecular dynamics, enhanced sampling, and machine-learned models of protein structure and dynamics, I study how conformational ensembles govern signaling and lipid recognition in neurodegenerative disease, and how those same ensembles can be exploited to engineer better enzymes.</p>
+        <p>I completed my B.S. in Chemical and Biological Engineering (with a minor in music) and my M.S. at CU Boulder. If you'd like to talk science or collaborate, feel free to reach out.</p>
+      </div>
+      <div class="links">
+        <!-- TODO: replace each href with your real link -->
+        <a class="btn primary" href="mailto:YOUR_EMAIL">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</a>
+        <a class="btn" href="cv.pdf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>CV</a>
+        <a class="btn" href="https://scholar.google.com/citations?user=YOUR_ID">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 1 9l11 6 9-4.9V17h2V9z"/><path d="M5 13.2v3.6L12 21l7-4.2v-3.6L12 17z"/></svg>Google Scholar</a>
+        <a class="btn" href="https://orcid.org/YOUR_ORCID">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" opacity=".25"/><path d="M8 7.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM7.2 10.5h1.6V17H7.2zM10.5 10.5h2.7c2.6 0 3.8 1.7 3.8 3.25S15.7 17 13.2 17h-2.7zm1.6 1.4v3.7h1c1.5 0 2.3-.9 2.3-1.85s-.7-1.85-2.3-1.85z"/></svg>ORCID</a>
+        <a class="btn" href="https://github.com/davidsaeb">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7 3.6 3.6 0 0 1 .1-2.7s.8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/YOUR_HANDLE">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <img class="float" src="images/trem2-dap12.webp" alt="Rendering of the TREM2–DAP12 complex embedded in a lipid membrane">
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="interests">
+  <div class="wrap row">
+    <div>
+      <h2>Things I don't work on but am interested in</h2>
+      <!-- Add or remove topics freely; the styling varies automatically. -->
+      <ul class="interests">
+        <li>mathematical models of Alzheimer's disease</li>
+        <li>tau</li>
+        <li>AI safety</li>
+        <li>taste receptors</li>
+        <li>food science</li>
+        <li>cultured meat</li>
+        <li>GPCRs</li>
+        <li>Parkinson's disease</li>
+        <li>molecular psychiatry</li>
+      </ul>
+    </div>
+    <aside class="rail">
+      <div class="glow"><img class="float" src="images/strem2-lipids.webp" alt="sTREM2 surface rendering with bound phospholipids"></div>
+    </aside>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="wrap row">
+    <div>
+      <h2>Publications</h2>
+      <article class="pub">
+        <div class="yr">2026<br><span class="badge">Review</span></div>
+        <div>
+          <h4>Uncovering the Biological Mechanisms of TREM2 with Molecular Simulations: A Comprehensive Review and Perspective</h4>
+          <p class="authors">E. Lietzke, <b>D. Saeb</b>, E. Aldrich, R. de Menezes, K. Bruce, K. Sprenger</p>
+          <p class="venue"><em>Progress in Biophysics and Molecular Biology</em> <a href="https://doi.org/10.1016/j.pbiomolbio.2026.06.002">DOI ↗</a></p>
+        </div>
+      </article>
+      <article class="pub">
+        <div class="yr"><span class="badge alt">Preprint</span></div>
+        <div>
+          <h4>Enhanced Sampling Molecular Simulations of Protein–Polymer Interactions in PEGylated Lysozyme Bioconjugates</h4>
+          <p class="authors">Z. Dong*, A. Wegner*, <b>D. Saeb</b>, P. Cintrón Baerga, M. Kwan, M. Toney, M. Shirts, K. Sprenger</p>
+          <p class="venue"><em>ChemRxiv</em> <span class="note">· *Equal contribution</span> <a href="https://chemrxiv.org/doi/abs/10.26434/chemrxiv.15004571/v3">DOI ↗</a></p>
+        </div>
+      </article>
+      <article class="pub">
+        <div class="yr">2025</div>
+        <div>
+          <h4>Synergistic reduction in interfacial flexibility of TREM2<sup>R47H</sup> and ApoE4 may underlie AD pathology</h4>
+          <p class="authors">E. Lietzke, <b>D. Saeb</b>, E. Aldrich, K. Bruce*, K. Sprenger*</p>
+          <p class="venue"><em>Alzheimer's &amp; Dementia</em> <span class="note">· *Co-corresponding</span> <a href="https://doi.org/10.1002/alz.70120">DOI ↗</a></p>
+        </div>
+      </article>
+      <article class="pub">
+        <div class="yr">2025<br><span class="badge">First author</span></div>
+        <div>
+          <h4>The flexible stalk domain of sTREM2 modulates its interactions with brain-based phospholipids</h4>
+          <p class="authors"><b>D. Saeb</b>, E. Lietzke, D. Fuchs, E. Aldrich, K. Bruce, K. Sprenger</p>
+          <p class="venue"><em>eLife</em> <a href="https://doi.org/10.7554/eLife.102269.3">DOI ↗</a></p>
+        </div>
+      </article>
+    </div>
+    <aside class="rail">
+      <div class="frame-light"><video poster="videos/kemp-reaction-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Animation of the Kemp elimination in an enzyme active site"><source src="videos/kemp-reaction.webm" type="video/webm"><source src="videos/kemp-reaction.mp4" type="video/mp4"></video></div>
+      <div class="blend"><video poster="videos/enzyme-ensemble-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Conformational ensemble of an enzyme"><source src="videos/enzyme-ensemble.webm" type="video/webm"><source src="videos/enzyme-ensemble.mp4" type="video/mp4"></video></div>
+    </aside>
+  </div>
+</section>
+
+<section id="talks">
+  <div class="wrap row">
+    <div>
+      <h2>Talks &amp; honors</h2>
+      <h3 class="sub">Selected presentations</h3>
+      <ul class="list">
+        <li><span class="y">2026</span><span><span class="kind oral">Oral</span>A Lipid Membrane Embedded Model of the Full TREM2–DAP12 Signaling Complex<span class="sub">Kern Lipid Conference · Early Career Investigator talk</span></span></li>
+        <li><span class="y">2025</span><span><span class="kind oral">Oral</span>Molecular Modeling of TREM2 and sTREM2 Reveals Mechanisms of Microglial Signaling and Therapeutic Potential in Alzheimer's Disease<span class="sub">AIChE Annual Meeting</span></span></li>
+        <li><span class="y">2025</span><span><span class="kind">Poster</span>Atomistic Simulations and Ligand Screening of PEG10 Aspartic Protease in ALS<span class="sub">AIChE Annual Meeting</span></span></li>
+        <li><span class="y">2025</span><span><span class="kind">Poster</span>The flexible stalk region of sTREM2 modulates its interactions with phospholipids in the brain<span class="sub">AAIC Advancements: APOE &amp; Lipid Biology</span></span></li>
+        <li><span class="y">2024</span><span><span class="kind">Poster</span>The flexible stalk region of sTREM2 modulates its interactions with phospholipids in the brain<span class="sub">Kern Lipid Conference</span></span></li>
+      </ul>
+      <h3 class="sub">Awards &amp; fellowships</h3>
+      <ul class="list">
+        <li><span class="y">2026</span><span>Early Career Investigator Award<span class="sub">Kern Lipid Conference</span></span></li>
+        <li><span class="y">2026</span><span>Selected Young Scientist<span class="sub">Lindau Nobel Laureate Meeting (Interdisciplinary)</span></span></li>
+        <li><span class="y">2025</span><span>Conference Fellowships<span class="sub">AAIC Advancements: Tau Global; APOE &amp; Lipid Biology</span></span></li>
+        <li><span class="y">2024</span><span>NSF Graduate Research Fellowship</span></li>
+        <li><span class="y">2023</span><span>D. E. Shaw Research Undergraduate and Master's Fellowship</span></li>
+        <li><span class="y">2023</span><span>Research Award<span class="sub">College of Engineering, CU Boulder</span></span></li>
+        <li><span class="y">2023</span><span>Marilyn and Howard L. Anseth Outstanding Undergraduate Research Assistant Award</span></li>
+      </ul>
+    </div>
+    <aside class="rail">
+      <div class="glow"><img class="float d2" src="images/helical-ensemble.webp" alt="Overlaid conformations of a helical protein"></div>
+      <div class="glow"><img class="float d3" src="images/strem2-stalk.webp" alt="sTREM2 with its flexible stalk"></div>
+    </aside>
+  </div>
+</section>
+
+<section id="beyond" class="beyond">
+  <div class="wrap row">
+    <div>
+      <h2>Teaching, service &amp; other things</h2>
+      <p>I've mentored several undergraduate researchers in the Sprenger Lab as they prepared for graduate school, and I serve as an Advanced Teaching Assistant at CU Boulder, helping coordinate, teach recitation for, and lecture a 400+ student course. I've reviewed for the GEM workshop on generative and experimental perspectives for biomolecular design at ICLR and NeurIPS 2026.</p>
+      <p>Outside of research, I minored in music as an undergrad and have recently picked the violin back up.</p>
+    </div>
+    <aside class="rail">
+      <div class="glow"><img class="float" src="images/strem2-extended.webp" alt="sTREM2 with its disordered stalk extended"></div>
+    </aside>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 David Saeb</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+  // Respect reduced-motion settings: hold videos on their first frame.
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('video').forEach(v => {
+    v.muted = true;
+    if (still) { v.removeAttribute('autoplay'); v.pause(); }
+    else { const p = v.play(); if (p) p.catch(() => {}); }
+  });
+</script>
+</body>
+</html>
