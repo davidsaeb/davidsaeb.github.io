@@ -44,7 +44,7 @@
   a { color: var(--aqua); text-decoration: none; }
   a:hover { color: var(--aqua-soft); text-decoration: underline; text-underline-offset: 3px; }
   img, video { max-width: 100%; display: block; }
-  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
   /* text column leaves room for the media column on the right */
   .content { max-width: calc(100% - var(--rail-w) - 64px); }
 
@@ -67,7 +67,7 @@
   .rail-layer { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
   .rail-layer .wrap { position: relative; height: 100%; }
   .rail { position: absolute; top: 0; bottom: 0; right: 24px; width: var(--rail-w); }
-  .ball { position: absolute; left: 0; right: 0; top: 0; will-change: transform; pointer-events: auto; }
+  .ball { position: absolute; left: 0; right: 0; top: 0; pointer-events: auto; }
   .ball img, .ball video { margin: 0 auto; }
 
   /* slow drift on every piece */
@@ -76,7 +76,8 @@
   .ball:nth-child(3n) .drift { animation-delay: -5.3s; }
   @keyframes drift { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-14px) rotate(1deg); } }
 
-  .hero-img { max-height: 560px; width: auto; filter: drop-shadow(0 18px 40px rgba(0, 0, 0, .35)); }
+  .ball.feature { left: -40px; }
+  .hero-img { max-height: min(680px, 74vh); width: auto; filter: drop-shadow(0 18px 40px rgba(0, 0, 0, .35)); }
   .glow { display: flex; align-items: center; justify-content: center; padding: 18px;
           background: radial-gradient(closest-side, rgba(166, 227, 225, .20), rgba(166, 227, 225, 0) 100%); }
   .glow img { max-height: 300px; width: auto; }
@@ -84,6 +85,11 @@
   .blend video { width: 100%; height: auto;
     -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 72%, transparent 100%);
             mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 72%, transparent 100%); }
+  .blend.wide video {
+    -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent), linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(to bottom, #000 82%, transparent), linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+            mask-composite: intersect; }
   /* the Kemp movie has its own white background, so it keeps a frame */
   .frame-light { border-radius: 18px; overflow: hidden; background: #fff; }
   .frame-light video { width: 100%; height: auto; }
@@ -94,13 +100,14 @@
       radial-gradient(900px 600px at 82% 30%, rgba(89, 195, 195, .16), transparent 60%),
       linear-gradient(180deg, var(--teal) 0%, var(--deep) 100%);
   }
-  header.hero .content { padding: 64px 0 72px; min-height: 600px; }
-  .who { display: flex; align-items: center; gap: 22px; margin-bottom: 26px; }
-  .who img { width: 132px; height: 132px; border-radius: 50%; object-fit: cover; border: 3px solid var(--aqua); flex: none; background: var(--teal); }
-  h1 { font: 500 clamp(40px, 6vw, 60px)/1.05 "Roboto", sans-serif; letter-spacing: -.015em; margin: 0 0 6px; }
-  .tagline { font-size: 17px; color: var(--sage); margin: 0; }
-  .bio p { margin: 0 0 16px; max-width: 64ch; }
-  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  header.hero .content { padding: 28px 0 36px; min-height: calc(100vh - 60px); display: flex; flex-direction: column; justify-content: center; }
+  .who { display: flex; align-items: center; gap: 32px; margin-bottom: 26px; }
+  .who img { width: 280px; height: 280px; border-radius: 50%; object-fit: cover; border: 3px solid var(--aqua); flex: none; background: var(--teal); }
+  h1 { font: 500 clamp(38px, 4.6vw, 54px)/1.05 "Roboto", sans-serif; letter-spacing: -.015em; margin: 0 0 6px; }
+  .tagline { font-size: clamp(14px, 1.3vw, 17.5px); color: var(--sage); margin: 0; white-space: nowrap; }
+  .bio p { margin: 0 0 12px; max-width: 66ch; }
+  .hero .bio { line-height: 1.6; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 8px 15px; border: 1px solid rgba(189, 196, 167, .35); border-radius: 999px;
@@ -147,24 +154,33 @@
   footer { background: var(--deeper); padding: 28px 0 40px; font-size: 13.5px; color: var(--muted); position: relative; z-index: 2; }
   footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 
-  /* ---------- Small screens: media becomes a swipeable strip under the intro ---------- */
+  .m-slot { display: none; }
+  /* ---------- Small screens: the images sit between the sections and scroll with the page ---------- */
+  @media (max-width: 1100px) {
+    .who { flex-direction: column; align-items: flex-start; gap: 22px; }
+  }
   @media (max-width: 900px) {
     :root { --rail-w: 0px; }
     .content { max-width: 100%; }
     header.hero .content { min-height: 0; padding: 44px 0 40px; }
-    .rail-layer { position: static; }
-    .rail-layer .wrap { height: auto; }
-    .rail { position: static; width: auto; display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
-    .ball { position: relative; flex: 0 0 72%; transform: none !important; scroll-snap-align: start; display: flex; align-items: center; }
-    .hero-img { max-height: 340px; }
+    .rail-layer { display: none; }
+    .m-slot { display: flex; flex-direction: column; align-items: center; gap: 28px; margin-top: 40px; }
+    .m-slot .ball { position: static; transform: none !important; width: 100%; max-width: 440px; }
+    .m-slot .blend video, .m-slot .frame-light video { width: 100%; }
+    .hero-img { max-height: 420px; }
+    .ball.feature { left: auto; }
+    .tagline { white-space: normal; font-size: 17px; }
+    header.hero .content { min-height: 0; }
     .glow img { max-height: 240px; }
   }
   @media (max-width: 600px) {
     .wrap { padding: 0 16px; }
-    nav ul { gap: 16px; font-size: 13.5px; }
-    nav ul li.hide-sm { display: none; }
-    .who { gap: 16px; }
-    .who img { width: 96px; height: 96px; }
+    nav .wrap { height: 54px; }
+    .brand { font-size: 16px; }
+    nav ul { gap: 14px; font-size: 13.5px; }
+    nav ul .long { display: none; }
+    .who { gap: 18px; flex-direction: column; align-items: flex-start; }
+    .who img { width: 220px; height: 220px; }
     section { padding: 56px 0; }
     .interests { columns: 1; }
     .pub { grid-template-columns: 1fr; gap: 6px; }
@@ -180,9 +196,9 @@
   <div class="wrap">
     <a class="brand" href="#top">David Saeb</a>
     <ul>
-      <li class="hide-sm"><a href="#interests">Interests</a></li>
+      <li><a href="#interests">Interests</a></li>
       <li><a href="#publications">Publications</a></li>
-      <li class="hide-sm"><a href="#talks">Talks &amp; Honors</a></li>
+      <li><a href="#talks">Talks<span class="long"> &amp; Honors</span></a></li>
       <li><a href="cv.pdf">CV</a></li>
     </ul>
   </div>
@@ -215,6 +231,7 @@
         <a class="btn" href="https://www.linkedin.com/in/davidsaeb">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.9-1.8-2.9s-2 1.4-2 2.8V21h-4z"/></svg>LinkedIn</a>
       </div>
+      <div class="m-slot" data-balls="0"></div>
     </div>
   </div>
 </header>
@@ -223,7 +240,7 @@
 <div class="rail-layer">
   <div class="wrap">
     <div class="rail" id="rail">
-      <div class="ball"><div class="drift">
+      <div class="ball feature"><div class="drift">
         <img class="hero-img" src="images/trem2-dap12.webp" width="900" height="1366" alt="Rendering of the TREM2–DAP12 complex embedded in a lipid membrane">
       </div></div>
       <div class="ball"><div class="drift glow">
@@ -238,8 +255,8 @@
       <div class="ball"><div class="drift blend">
         <video width="1000" height="800" poster="videos/ape-ensemble-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Conformational ensemble of ApePgb"><source src="videos/ape-ensemble.webm" type="video/webm"><source src="videos/ape-ensemble.mp4" type="video/mp4"></video>
       </div></div>
-      <div class="ball"><div class="drift blend">
-        <video width="720" height="586" poster="videos/trem2-membrane-cg-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Coarse-grained simulation of TREM2 in a lipid membrane"><source src="videos/trem2-membrane-cg.webm" type="video/webm"><source src="videos/trem2-membrane-cg.mp4" type="video/mp4"></video>
+      <div class="ball"><div class="drift blend wide">
+        <video width="720" height="678" poster="videos/trem2-membrane-cg-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Coarse-grained simulation of TREM2 in a lipid membrane"><source src="videos/trem2-membrane-cg.webm" type="video/webm"><source src="videos/trem2-membrane-cg.mp4" type="video/mp4"></video>
       </div></div>
       <div class="ball"><div class="drift blend">
         <video width="1000" height="1072" poster="videos/strem2-stalk-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="Simulation of sTREM2 and its flexible stalk"><source src="videos/strem2-stalk.webm" type="video/webm"><source src="videos/strem2-stalk.mp4" type="video/mp4"></video>
@@ -266,6 +283,7 @@
       <li>parkinson's disease</li>
       <li>molecular psychiatry</li>
     </ul>
+    <div class="m-slot" data-balls="1"></div>
   </div></div>
 </section>
 
@@ -304,6 +322,7 @@
         <p class="venue"><em>eLife</em> <a href="https://doi.org/10.7554/eLife.102269.3">DOI ↗</a></p>
       </div>
     </article>
+    <div class="m-slot" data-balls="2 3"></div>
   </div></div>
 </section>
 
@@ -328,6 +347,7 @@
       <li><span class="y">2023</span><span>Research Award<span class="sub">College of Engineering, CU Boulder</span></span></li>
       <li><span class="y">2023</span><span>Marilyn and Howard L. Anseth Outstanding Undergraduate Research Assistant Award</span></li>
     </ul>
+    <div class="m-slot" data-balls="4 5"></div>
   </div></div>
 </section>
 
@@ -336,6 +356,7 @@
     <h2>Teaching &amp; other things</h2>
     <p>I've mentored several outstanding undergraduate researchers as they prepared for graduate school, and I served as an Advanced Teaching Assistant for Gen Chem at CU Boulder, helping coordinate, teach recitation for, and lecture a 400+ student course.</p>
     <p>Outside of research, I minored in music as an undergrad and have recently picked the violin back up. I eventually want to find the time to attend culinary school in France.</p>
+    <div class="m-slot" data-balls="6"></div>
   </div></div>
 </section>
 
@@ -350,136 +371,58 @@
 </footer>
 
 <script>
-/* Media column physics.
-   Each piece is a "ball" with a rest position (evenly spaced down the page).
-   The top edge of the screen pushes pieces down while you scroll down, and the
-   bottom edge pushes them up while you scroll up. A pushed piece keeps its
-   momentum when you stop, collides with its neighbour and hands off velocity
-   (equal masses, slightly inelastic), and a soft spring eases everything back
-   to even spacing. */
+/* Media column: pieces are spaced evenly down the page and drift gently (CSS).
+   This script only measures the page and sets each piece's position. */
 (function () {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('video').forEach(v => {
     v.muted = true;
     if (reduce) { v.removeAttribute('autoplay'); v.pause(); }
-    else { const p = v.play(); if (p) p.catch(() => {}); }
+    else { const pr = v.play(); if (pr) pr.catch(() => {}); }
   });
 
   const rail = document.getElementById('rail');
-  const page = document.querySelector('.page');
   const balls = [...rail.querySelectorAll('.ball')];
   const desktop = window.matchMedia('(min-width: 901px)');
 
-  const NAV = 60, EDGE = 24, GAP_MIN = 48;
-  const FRICTION = 0.9;     // 1/s, momentum decay
-  const SPRING = 0.22;      // 1/s^2, slow pull back toward even spacing
-  const DAMP = 0.5;         // 1/s, spring damping
-  const RESTITUTION = 0.95; // near-elastic: the hit piece takes most of the momentum
-  const VMAX = 2600;        // px/s
-  const LAUNCH = 1.35;      // struck piece leaves a bit faster than you're scrolling
-
-  let rest = [], h = [], p = [], v = [], lo = 0, hi = 0;
-  let lastY = window.scrollY, lastT = performance.now(), vs = 0, running = false;
+  const slots = [...document.querySelectorAll('.m-slot')];
+  function place() {
+    if (desktop.matches) { balls.forEach(b => { if (b.parentNode !== rail) rail.appendChild(b); }); }
+    else slots.forEach(sl => sl.dataset.balls.split(' ').forEach(k => { const b = balls[+k]; if (b.parentNode !== sl) sl.appendChild(b); }));
+    balls.forEach(b => b.querySelectorAll('video').forEach(v => { const pr = v.play(); if (pr) pr.catch(() => {}); }));
+  }
 
   function layout() {
-    h = balls.map(b => b.offsetHeight);
-    const railTop = rail.getBoundingClientRect().top + window.scrollY;
-    const footer = document.querySelector('footer').getBoundingClientRect().top + window.scrollY;
-    lo = 36;                                   // first piece starts just inside the intro
-    hi = footer - railTop - 40;                // last piece ends just above the footer
-    const total = h.reduce((a, b) => a + b, 0);
-    const gap = Math.max(GAP_MIN, (hi - lo - total) / (balls.length - 1));
-    let y = lo;
-    rest = h.map(hh => { const r = y; y += hh + gap; return r; });
-    if (!p.length) { p = rest.slice(); v = rest.map(() => 0); }
-    rail.dataset.top = railTop;
-  }
-
-  function render() { balls.forEach((b, i) => { b.style.transform = `translate3d(0, ${p[i].toFixed(1)}px, 0)`; }); }
-
-  let released = [], carried = [], calmFor = 0, lastDir = 0;
-
-  function step(now) {
-    if (!desktop.matches || reduce) { running = false; return; }
-    const dt = Math.min(0.033, Math.max(0.001, (now - lastT) / 1000)); lastT = now;
-    const y = window.scrollY;
-    const raw = (y - lastY) / dt; lastY = y;
-    vs += (raw - vs) * 0.5;                    // smoothed scroll velocity
-    const dir = vs > 5 ? 1 : vs < -5 ? -1 : 0;
-    if (!released.length) { released = balls.map(() => false); carried = balls.map(() => false); }
-    // once scrolling pauses or reverses, every piece can be carried again
-    calmFor = dir === 0 ? calmFor + dt : 0;
-    if (calmFor > 0.25 || (dir && dir !== lastDir)) { released.fill(false); carried.fill(false); }
-    if (dir) lastDir = dir;
-
-    const railTop = +rail.dataset.top;
-    const topLine = y + NAV + EDGE - railTop;  // screen's top edge, in rail coordinates
-    const botLine = y + window.innerHeight - EDGE - railTop;
-    const pinned = new Array(balls.length).fill(false);
-
-    for (let i = 0; i < balls.length; i++) {
-      // free motion: slow spring toward the even-spacing spot, damping, friction
-      const a = -SPRING * (p[i] - rest[i]) - DAMP * v[i];
-      v[i] += a * dt;
-      v[i] *= Math.exp(-FRICTION * dt);
-      v[i] = Math.max(-VMAX, Math.min(VMAX, v[i]));
-      p[i] += v[i] * dt;
-
-      // the screen edge carries the piece it touches (unless that piece already handed off)
-      if (released[i]) continue;
-      const onScreen = p[i] + h[i] > topLine - NAV && p[i] < botLine + EDGE;
-      if (dir > 0 && onScreen && p[i] < topLine) { p[i] = topLine; v[i] = Math.max(v[i], vs); pinned[i] = carried[i] = true; }
-      if (dir < 0 && onScreen && p[i] + h[i] > botLine) { p[i] = botLine - h[i]; v[i] = Math.min(v[i], vs); pinned[i] = carried[i] = true; }
-    }
-
-    // collisions between neighbours
-    for (let pass = 0; pass < 3; pass++) {
-      for (let i = 0; i < balls.length - 1; i++) {
-        const j = i + 1, overlap = p[i] + h[i] + GAP_MIN - p[j];
-        if (overlap <= 0) continue;
-        if (carried[i] && dir > 0) {
-          // carried piece strikes the next one: it stops, the next one is launched ahead
-          v[j] = Math.max(v[j], Math.max(vs, v[i]) * LAUNCH); v[i] = 0;
-          p[j] += overlap; pinned[i] = carried[i] = false; released[i] = true;
-        } else if (carried[j] && dir < 0) {
-          v[i] = Math.min(v[i], Math.min(vs, v[j]) * LAUNCH); v[j] = 0;
-          p[i] -= overlap; pinned[j] = carried[j] = false; released[j] = true;
-        } else {
-          if (v[i] > v[j]) {                    // free pieces: near-elastic, equal masses
-            const vi = v[i], vj = v[j], e = RESTITUTION;
-            v[i] = ((1 - e) * vi + (1 + e) * vj) / 2;
-            v[j] = ((1 + e) * vi + (1 - e) * vj) / 2;
-          }
-          if (pinned[i]) p[j] += overlap;
-          else if (pinned[j]) p[i] -= overlap;
-          else { p[i] -= overlap / 2; p[j] += overlap / 2; }
-        }
-      }
-    }
-
-    // keep the column within the page
-    if (p[0] < lo) { p[0] = lo; if (v[0] < 0) v[0] *= -0.4; }
-    const n = balls.length - 1;
-    if (p[n] + h[n] > hi) { p[n] = hi - h[n]; if (v[n] > 0) v[n] *= -0.4; }
-
-    render();
-    requestAnimationFrame(step);
-  }
-
-  function start() {
+    place();
     if (!desktop.matches) { balls.forEach(b => (b.style.transform = '')); return; }
-    layout(); render();
-    if (!reduce && !running) { running = true; lastT = performance.now(); lastY = window.scrollY; requestAnimationFrame(step); }
+    const sy = window.scrollY;
+    const railTop = rail.getBoundingClientRect().top + sy;
+    const hero = document.querySelector('header.hero').getBoundingClientRect();
+    const heroTop = hero.top + sy - railTop, heroH = hero.height;
+    const footer = document.querySelector('footer').getBoundingClientRect().top + sy - railTop;
+    const h = balls.map(b => b.offsetHeight);
+
+    // the membrane render sits centered beside the intro
+    const visible = Math.min(heroH, window.innerHeight - 60);       // center on what you see when the page opens
+    const y0 = Math.max(24, heroTop + (visible - h[0]) / 2);
+    balls[0].style.transform = `translate3d(0, ${Math.round(y0)}px, 0)`;
+
+    // the rest share the space below it with equal gaps (above, between, and below)
+    const start = y0 + h[0], end = footer - 24;
+    const rest = h.slice(1), total = rest.reduce((a, b) => a + b, 0);
+    const gap = Math.max(40, (end - start - total) / (rest.length + 1));
+    let y = start + gap;
+    rest.forEach((hh, k) => { balls[k + 1].style.transform = `translate3d(0, ${Math.round(y)}px, 0)`; y += hh + gap; });
   }
 
   if ('ResizeObserver' in window) {
-    const ro = new ResizeObserver(() => { if (desktop.matches) layout(); });
-    balls.forEach(b => ro.observe(b)); ro.observe(page);
+    const ro = new ResizeObserver(layout);
+    balls.forEach(b => ro.observe(b)); ro.observe(document.querySelector('.page'));
   }
-  window.addEventListener('resize', start);
-  window.addEventListener('load', start);
-  desktop.addEventListener ? desktop.addEventListener('change', start) : desktop.addListener(start);
-  start();
+  window.addEventListener('resize', layout);
+  desktop.addEventListener ? desktop.addEventListener('change', layout) : desktop.addListener(layout);
+  window.addEventListener('load', layout);
+  layout();
 })();
 </script>
 </body>
