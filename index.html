@@ -104,6 +104,8 @@
   .who { display: flex; align-items: center; gap: 32px; margin-bottom: 26px; }
   .who img { width: 280px; height: 280px; border-radius: 50%; object-fit: cover; border: 3px solid var(--aqua); flex: none; background: var(--teal); }
   h1 { font: 500 clamp(38px, 4.6vw, 54px)/1.05 "Roboto", sans-serif; letter-spacing: -.015em; margin: 0 0 6px; }
+  .role { font-size: clamp(15px, 1.4vw, 19px); font-weight: 500; color: var(--text); margin: 4px 0 6px; white-space: nowrap; }
+  .role span { color: var(--aqua); margin: 0 4px; }
   .tagline { font-size: clamp(14px, 1.3vw, 17.5px); color: var(--sage); margin: 0; white-space: nowrap; }
   .bio p { margin: 0 0 12px; max-width: 66ch; }
   .hero .bio { line-height: 1.6; }
@@ -170,6 +172,7 @@
     .hero-img { max-height: 420px; }
     .ball.feature { left: auto; }
     .tagline { white-space: normal; font-size: 17px; }
+    .role { white-space: normal; font-size: 17px; }
     header.hero .content { min-height: 0; }
     .glow img { max-height: 240px; }
   }
@@ -213,6 +216,7 @@
         <img src="images/david.jpg" alt="Portrait of David Saeb">
         <div>
           <h1>David Saeb</h1>
+          <p class="role">Chemical Engineering PhD Student <span>·</span> CU Boulder <span>·</span> Caltech</p>
           <p class="tagline">Molecular simulation, protein dynamics, and enzyme design</p>
         </div>
       </div>
